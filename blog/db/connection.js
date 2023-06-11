@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connection = async () => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/mi_blog");
+    await mongoose.connect("Credenciales");
 
     console.log("Conectado Correctamente a la DB mi_blod👌👌");
   } catch (error) {
