@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { prueba, crear, conseguirArticulos } = require("../controllers/ArticuloController");
+const { prueba, crear, conseguirArticulos, uno, borrar } = require("../controllers/ArticuloController");
 
 const router = Router();
 
@@ -7,6 +7,8 @@ const router = Router();
 
 router.get("/", prueba);
 router.post("/crear", crear);
-router.get("/articulos", conseguirArticulos);
+router.get("/articulos/:ultimos?", conseguirArticulos);
+router.get("/articulo/:id", uno);
+router.delete('/articulo/:id', borrar)
 
 module.exports = router;

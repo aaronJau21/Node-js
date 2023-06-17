@@ -43,7 +43,12 @@ const crear = (req, res) => {
 };
 
 const conseguirArticulos = (req, res) => {
-  let consulta = Articulo.find({})
+  let consulta = Articulo.find({});
+
+  consulta.limit(req.params.ultimos);
+
+  consulta
+    .sort({ fecha: -1 })
     .then((resp) => {
       if (resp.length === 0) {
         return res.status(400).json({
@@ -54,6 +59,7 @@ const conseguirArticulos = (req, res) => {
 
       return res.json({
         status: "success",
+        contador: resp.length,
         data: resp,
       });
     })
@@ -66,8 +72,48 @@ const conseguirArticulos = (req, res) => {
     });
 };
 
+const uno = async (req, res) => {
+  // Recoger un id por la URL
+  let id = req.params.id;
+
+  try {
+    const articulo = await Articulo.findById(id);
+
+    return res.status(200).json({
+      status: "success",
+      articulo,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      status: "error",
+      msg: "No se encuentra articulo",
+    });
+  }
+};
+
+const borrar = (req, res) => {
+  let id = req.params.id;
+
+  Articulo.findOneAndDelete({ _id: id }).then((resp) => {
+    if (!resp) {
+      return res.status(400).json({
+        status: "success",
+        msg: "No existe ",
+      });
+    }
+    console.log(resp)
+
+    return res.status(200).json({
+      status: "success",
+      msg: "Metodo de borrar",
+    });
+  });
+};
+
 module.exports = {
   prueba,
   crear,
   conseguirArticulos,
+  uno,
+  borrar,
 };
